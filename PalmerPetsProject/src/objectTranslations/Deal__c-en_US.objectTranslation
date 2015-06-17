@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Deal</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Deals</value>
+    </caseValues>
+    <fields>
+        <label><!-- Acceptance Rate --></label>
+        <name>Acceptance_Rate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Acceptances --></label>
+        <name>Acceptances__c</name>
+    </fields>
+    <fields>
+        <label><!-- Available Deals --></label>
+        <name>Available_Deals__c</name>
+    </fields>
+    <fields>
+        <label><!-- Max Acceptances --></label>
+        <name>Max_Acceptances__c</name>
+    </fields>
+    <fields>
+        <label><!-- Rejections --></label>
+        <name>Rejections__c</name>
+    </fields>
+    <fields>
+        <label><!-- Valid Through --></label>
+        <name>Valid_Through__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>
