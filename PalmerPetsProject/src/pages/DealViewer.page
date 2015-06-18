@@ -9,21 +9,21 @@
                 </apex:form>
                 </apex:column>
                 <apex:column headerValue="Status">
-                    <!--<apex:outputText value="{! offer.status}"></apex:outputText>-->
+                    <apex:outputText value="{! offer.status}"></apex:outputText>
                     
                 </apex:column>
                 <apex:column headerValue="Icon"> </apex:column>
                 <apex:column headerValue="Deal Name">
                     <apex:outputText value="{! offer.dealName}"></apex:outputText>
                 </apex:column>
-                <!--<apex:column headerValue="Valid Through">
+                <apex:column headerValue="Valid Through">
                     <apex:outputText value="{0,date,MMM d, YYYY}">
                         <apex:param value="{! offer.validThrough}"/>
                     </apex:outputText>
                 </apex:column>
                 <apex:column headerValue="Available Deals">
                     <apex:outputText value="{! offer.availableDeals}"></apex:outputText>
-                </apex:column> -->
+                </apex:column>
             </apex:pageBlockTable>
         </apex:pageBlockSection>
     </apex:pageBlock>
