@@ -1,11 +1,18 @@
 <apex:page sidebar="false"  showHeader="false"  controller="DealViewerFrontController">
-    <apex:pageBlock title="{! $User.firstname} {! $User.lastname}">
-        <apex:pageBlockSection title="Deals" >
-            <apex:pageBlockTable value="{! offers}" var="offer" columnsWidth="30%,10%,10%,20%,20%,10%">
+    <apex:pageBlock id="deal_viewer_page" title="{! contactperson.Name}">
+        <apex:pageBlockSection columns="2" title="Total Deal Summary">
+            <apex:outputText label="Acceptance Rate" value="{0, number, 0.00%}">
+                <apex:param value="{! contact.Acceptance_Rate__c/100}"/>
+            </apex:outputText>
+            <apex:outputText value="{! contact.Deals_Accepted__c}"></apex:outputText>
+            <apex:outputText value="{! contact.Deals_Rejected__c}"></apex:outputText>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" title="Deals" >
+            <apex:pageBlockTable id="deal_list_table" value="{! offers}" var="offer" columnsWidth="20%">
                 <apex:column headerValue="Action">
                 <apex:form >
-                    <apex:commandButton disabled="true" value="Accept" action="accept" />
-                    <apex:commandButton value="Reject" action="reject"/>
+                    <apex:commandButton value="Accept" action="{! acceptOffer}" disabled="{! offer.isAcceptable}" reRender="deal_viewer_page" />
+                    <apex:commandButton value="Reject" action="{! rejectOffer}" disabled="{! offer.isRejectable}" reRender="deal_viewer_page"/>
                 </apex:form>
                 </apex:column>
                 <apex:column headerValue="Status">
@@ -22,7 +29,9 @@
                     </apex:outputText>
                 </apex:column>
                 <apex:column headerValue="Available Deals">
-                    <apex:outputText value="{! offer.availableDeals}"></apex:outputText>
+                    <apex:outputText value="{0,number,0}">
+                        <apex:param value="{! offer.availableDeals}"/>
+                    </apex:outputText>
                 </apex:column>
             </apex:pageBlockTable>
         </apex:pageBlockSection>
