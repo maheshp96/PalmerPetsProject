@@ -1,27 +1,29 @@
-<apex:page sidebar="false"  showHeader="false"  standardController="Deal__c" recordSetVar="offers">
+<apex:page sidebar="false"  showHeader="false"  controller="DealViewerFrontController">
     <apex:pageBlock title="{! $User.firstname} {! $User.lastname}">
         <apex:pageBlockSection title="Deals" >
             <apex:pageBlockTable value="{! offers}" var="offer" columnsWidth="30%,10%,10%,20%,20%,10%">
                 <apex:column headerValue="Action">
                 <apex:form >
-                    <apex:commandButton value="Accept" action="accept" />
+                    <apex:commandButton disabled="true" value="Accept" action="accept" />
                     <apex:commandButton value="Reject" action="reject"/>
                 </apex:form>
                 </apex:column>
                 <apex:column headerValue="Status">
+                    <!--<apex:outputText value="{! offer.status}"></apex:outputText>-->
+                    
                 </apex:column>
                 <apex:column headerValue="Icon"> </apex:column>
                 <apex:column headerValue="Deal Name">
-                    <apex:outputText value="{! offer.name}"></apex:outputText>
+                    <apex:outputText value="{! offer.dealName}"></apex:outputText>
                 </apex:column>
-                <apex:column headerValue="Valid Through">
+                <!--<apex:column headerValue="Valid Through">
                     <apex:outputText value="{0,date,MMM d, YYYY}">
-                        <apex:param value="{! offer.valid_through__c}"/>
+                        <apex:param value="{! offer.validThrough}"/>
                     </apex:outputText>
                 </apex:column>
                 <apex:column headerValue="Available Deals">
-                    <apex:outputText value="{! offer.available_deals__c}"></apex:outputText>
-                </apex:column>
+                    <apex:outputText value="{! offer.availableDeals}"></apex:outputText>
+                </apex:column> -->
             </apex:pageBlockTable>
         </apex:pageBlockSection>
     </apex:pageBlock>
