@@ -332,6 +332,6 @@
         <masterLabel>Deal Viewer</masterLabel>
         <openType>replace</openType>
         <protected>false</protected>
-        <url>https://na24.salesforce.com/apex/DealViewer</url>
+        <url>https://na24.salesforce.com/apex/DealViewer?contactId={!Contact.Id}</url>
     </webLinks>
 </CustomObject>
