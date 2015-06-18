@@ -131,6 +131,7 @@
     </fields>
     <fields>
         <fullName>Deals_Accepted__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Deals Accepted</label>
         <precision>18</precision>
@@ -142,6 +143,7 @@
     </fields>
     <fields>
         <fullName>Deals_Rejected__c</fullName>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Deals Rejected</label>
         <precision>18</precision>
