@@ -100,7 +100,7 @@
         <externalId>false</externalId>
         <formula>if (AND (Deals_Accepted__c &lt;&gt; 0, Deals_Rejected__c &lt;&gt; 0) , 
   Deals_Accepted__c / ( Deals_Accepted__c +  Deals_Rejected__c ),
-  0 )</formula>
+  if(Deals_Rejected__c == null, 100, 0) )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Acceptance Rate</label>
         <precision>18</precision>
