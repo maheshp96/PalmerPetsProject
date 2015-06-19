@@ -40,27 +40,22 @@ public class DealViewerFrontController {
                 {
                     dealsList.add(new DisplayOffers(item));
                 }
-            for(Deal_Action__c dealAction: [
-                Select d.SystemModstamp, d.OwnerId, d.Name,
-                d.LastViewedDate, d.LastReferencedDate, d.LastModifiedDate, 
-                d.LastModifiedById, d.LastActivityDate, d.IsDeleted, d.Id, 
-                d.CreatedDate, d.CreatedById, d.Contact__c, d.Action__c, d.Deal__r.Name 
-                From Deal_Action__c d
-                Where d.Contact__r.Id=:contactId
-            ])
-                {
-                    dealActionMap = new Map<String, String>();
-                    String dealName = dealAction.Deal__r.Name;
-                    dealActionMap.put(dealName, dealAction.Action__c);
-                }            
         }
+        dealActionMap = getDealActions();
         return dealsList;
     }
 
+    public Id getofferInstance(){
+        String dealName = ApexPages.currentPage().getParameters().get('dealName');
+        Deal__c offerInstance = [Select d.Valid_Through__c, d.SystemModstamp, d.Rejections__c, d.OwnerId, d.Name, d.Max_Acceptances__c, d.LastViewedDate, d.LastReferencedDate, d.LastModifiedDate, d.LastModifiedById, d.LastActivityDate, d.IsDeleted, d.Id, d.CreatedDate, d.CreatedById, d.Available_Deals__c, d.Acceptances__c, d.Acceptance_Rate__c From Deal__c d where d.Name=:dealName];
+        return offerInstance.Id;
+    }
+
     public void rejectOffer() {
-    	//Insert a new record for rejected offer instance in the Deal_Action table.
-    	Deal_Action__c dealAction = new Deal_Action__c();
-    	
+        Id dealId = getofferInstance();
+        //Insert a new record for rejected offer instance in the Deal_Action table.
+        Deal_Action__c dealAction = new Deal_Action__c(Action__c='Reject', Contact__c=contactId, Deal__c=dealId);
+        upsert dealAction;
         System.debug(contactperson);
         contactperson.Deals_Rejected__c+=1;
         update contactperson;
@@ -86,14 +81,10 @@ public class DealViewerFrontController {
         {
             get{ 
                 if(dealActionMap.containsKey(deal.Name)){
-                    //Deal_Action__c dealAction = (Deal_Action__c)dealActionMap.get(deal.Name);
-                    //return dealAction.Action__c;
                     return dealActionMap.get(deal.Name) + 'ed';
                 }
                 else
                 {
-                    //Deal_Action__c da = (Deal_Action__c)dealActionMap.get(deal.Name);
-                        //return da.Action__c;
                     return 'Available';
                 }
             }
