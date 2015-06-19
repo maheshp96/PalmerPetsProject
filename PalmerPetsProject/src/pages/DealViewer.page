@@ -1,6 +1,7 @@
 <apex:page sidebar="false"  showHeader="false"  controller="DealViewerFrontController">
-    <apex:pageBlock id="deal_viewer_page" title="{! contactperson.Name}">
-        <apex:pageBlockSection columns="2" title="Total Deal Summary">
+    <apex:form >
+    <apex:pageBlock title="{! contactperson.Name}">
+        <apex:pageBlockSection id="deal_summary_section" columns="2" title="Total Deal Summary">
             <apex:outputText label="Acceptance Rate" value="{0, number, 0.00%}">
                 <apex:param value="{! contact.Acceptance_Rate__c/100}"/>
             </apex:outputText>
@@ -8,18 +9,22 @@
             <apex:outputText value="{! contact.Deals_Rejected__c}"></apex:outputText>
         </apex:pageBlockSection>
         <apex:pageBlockSection columns="1" title="Deals" >
-            <apex:pageBlockTable id="deal_list_table" value="{! offers}" var="offer" columnsWidth="20%">
+            <apex:pageBlockTable id="deal_list_table" value="{! offers}" var="offer" columnsWidth="15%">
                 <apex:column headerValue="Action">
-                <apex:form >
-                    <apex:commandButton value="Accept" action="{! acceptOffer}" disabled="{! offer.isAcceptable}" reRender="deal_viewer_page" />
-                    <apex:commandButton value="Reject" action="{! rejectOffer}" disabled="{! offer.isRejectable}" reRender="deal_viewer_page"/>
-                </apex:form>
+                    <apex:commandButton value="Accept" action="{! acceptOffer}" disabled="{! offer.isAcceptable}" reRender="deal_summary_section,deal_list_table" >
+                        <apex:param name="dealName" value="{! offer.dealName}"/>
+                    </apex:commandButton>
+                    <apex:commandButton value="Reject" action="{! rejectOffer}" disabled="{! offer.isRejectable}" reRender="deal_summary_section,deal_list_table">
+                        <apex:param name="dealName" value="{! offer.dealName}"/>
+                    </apex:commandButton>
                 </apex:column>
                 <apex:column headerValue="Status">
                     <apex:outputText value="{! offer.status}"></apex:outputText>
                     
                 </apex:column>
-                <apex:column headerValue="Icon"> </apex:column>
+                <apex:column headerValue="Icon">
+                    <apex:image url="{! offer.icon}" height="100" width="100"/>
+                </apex:column>
                 <apex:column headerValue="Deal Name">
                     <apex:outputText value="{! offer.dealName}"></apex:outputText>
                 </apex:column>
@@ -34,6 +39,34 @@
                     </apex:outputText>
                 </apex:column>
             </apex:pageBlockTable>
+<!--            <apex:panelGrid columns="8" id="pagingPanel">
+         <apex:commandLink action="{!previous}" rendered="{!hasPrevious}" rerender="pagingPanel,deal_list_table">
+                <apex:outputLabel value="<<Previous" style="font-weight: bold;"/>
+                </apex:commandlink>
+                <apex:commandLink action="{!next}" rendered="{!hasNext}" rerender="pagingPanel,deal_list_table">
+                     <apex:outputLabel value="Next>>" style="font-weight: bold;"/>
+                  </apex:commandlink>
+          </apex:panelGrid>  -->
+                <apex:panelGrid columns="5" cellpadding="5" cellspacing="5" >
+                <apex:commandButton value="|<<" action="{!first}" reRender="deal_list_table"/>
+                <apex:commandButton rendered="{!HasPrevious}" value="<" action="{!previous}" reRender="deal_list_table"/>
+                <apex:commandButton rendered="{!HasNext}" value=">" action="{!next}" reRender="deal_list_table"/>
+                <apex:commandButton value=">>|" action="{!last}" reRender="deal_list_table"/>
+                <apex:outputText value="3 Records/Page"></apex:outputText>
+                <!-- <apex:panelGroup >
+                    <apex:selectList value="{!PageSize}" size="1">
+                        <apex:selectOption itemValue="10" itemLabel="10"></apex:selectOption>
+                        <apex:selectOption itemValue="20" itemLabel="20"></apex:selectOption>
+                        <apex:selectOption itemValue="30" itemLabel="30"></apex:selectOption>
+                    </apex:selectList>
+                    <apex:commandButton action="{!null}" value="Update Page Size" reRender="deal_list_table"/>
+                </apex:panelGroup> -->
+            </apex:panelGrid>
+
         </apex:pageBlockSection>
+        <div id="doneBtnDiv" align="center">
+            <apex:commandButton style="align:center;" value="Done" action="/{! contactperson.Id}"/>
+        </div>
     </apex:pageBlock>
+    </apex:form>
 </apex:page>

@@ -4,6 +4,7 @@ public class DealViewerFrontController {
 
     public static String contactId = ApexPages.currentPage().getParameters().get('contactId');
     public List<DisplayOffers> dealsList;
+    public static Integer currentPage=1;
     public static Map<String, String> dealActionMap = getDealActions();
     
     public static Map<String,String> getDealActions(){
@@ -19,7 +20,7 @@ public class DealViewerFrontController {
                 {
                     //dealActionListMap  = new Map<String, String>();
                     String dealName = dealAction.Deal__r.Name;
-                    dealActionListMap  .put(dealName, dealAction.Action__c);
+                    dealActionListMap.put(dealName, dealAction.Action__c);
                 }
            return dealActionListMap;
     }
@@ -29,45 +30,75 @@ public class DealViewerFrontController {
     }
     
     public List<DisplayOffers> getOffers() {
+        System.debug('Entered getOffers function');
         contactperson = getContact();        
-        if(dealsList==null){
+        //if(dealsList==null){
             dealsList = new List<DisplayOffers>();
-            for(Deal__c item: [
+        //}
+/*            for(Deal__c item: [
                 //Select action__c, contact__r.name,deal__r.name from deal_action__c
                 // old query to get the dealActions and deals join from dealActions object.
-                Select Name,(Select Action__c From Deal_Actions__r),Valid_Through__c,Available_Deals__c From Deal__c d
+                Select Name,(Select Action__c From Deal_Actions__r),Valid_Through__c,Available_Deals__c From Deal__c d Limit :PageSize
                 ])
                 {
                     dealsList.add(new DisplayOffers(item));
                 }
-        }
-        dealActionMap = getDealActions();
+*/
+                        List<Deal__c> items = samplePagination.getRecords();
+            System.debug('Got records from samplePagination object');
+            for(Deal__c item : items){
+                dealsList.add(new DisplayOffers(item));
+            }
+        
+        
+                //List<Deal__c> items = samplePagination.getRecords();
+                System.debug('Got records from samplePagination object outside if condition');
+        dealActionMap = new Map<String,String>();
+                dealActionMap = getDealActions();
+
         return dealsList;
     }
 
-    public Id getofferInstance(){
+    public void rejectOffer() {
         String dealName = ApexPages.currentPage().getParameters().get('dealName');
         Deal__c offerInstance = [Select d.Valid_Through__c, d.SystemModstamp, d.Rejections__c, d.OwnerId, d.Name, d.Max_Acceptances__c, d.LastViewedDate, d.LastReferencedDate, d.LastModifiedDate, d.LastModifiedById, d.LastActivityDate, d.IsDeleted, d.Id, d.CreatedDate, d.CreatedById, d.Available_Deals__c, d.Acceptances__c, d.Acceptance_Rate__c From Deal__c d where d.Name=:dealName];
-        return offerInstance.Id;
-    }
-
-    public void rejectOffer() {
-        Id dealId = getofferInstance();
+        Id dealId = offerInstance.Id;
         //Insert a new record for rejected offer instance in the Deal_Action table.
         Deal_Action__c dealAction = new Deal_Action__c(Action__c='Reject', Contact__c=contactId, Deal__c=dealId);
         upsert dealAction;
+        
+        //Update the offer's rejection count
+        offerInstance.Rejections__c+=1;
+        update offerInstance;
+        
+        //update the contact's rejection count
         System.debug(contactperson);
+        if(contactperson.Deals_Rejected__c==null)
+            contactperson.Deals_Rejected__c=0;
         contactperson.Deals_Rejected__c+=1;
         update contactperson;
     }
 
 
     public void acceptOffer() {
+        String dealName = ApexPages.currentPage().getParameters().get('dealName');
+        Deal__c offerInstance = [Select d.Valid_Through__c, d.SystemModstamp, d.Rejections__c, d.OwnerId, d.Name, d.Max_Acceptances__c, d.LastViewedDate, d.LastReferencedDate, d.LastModifiedDate, d.LastModifiedById, d.LastActivityDate, d.IsDeleted, d.Id, d.CreatedDate, d.CreatedById, d.Available_Deals__c, d.Acceptances__c, d.Acceptance_Rate__c From Deal__c d where d.Name=:dealName];
+        Id dealId = offerInstance.Id;
+        //Insert a new record for accepted offer instance in the Deal_Action table.
+        Deal_Action__c dealAction = new Deal_Action__c(Action__c='Accept', Contact__c=contactId, Deal__c=dealId);
+        upsert dealAction;
+        
+        //Update the offer's acceptances count
+        offerInstance.Acceptances__c+=1;
+        update offerInstance;
+        
+        //update the contact's acceptance count
         System.debug(contactperson);
+        if(contactperson.Deals_Accepted__c==null)
+            contactperson.Deals_Accepted__c=0;
         contactperson.Deals_Accepted__c+=1;
         update contactperson;
     }
-
 
     
     public class DisplayOffers{
@@ -83,35 +114,58 @@ public class DealViewerFrontController {
                 if(dealActionMap.containsKey(deal.Name)){
                     return dealActionMap.get(deal.Name) + 'ed';
                 }
-                else
+                else if (deal.Available_Deals__c > 0)
                 {
                     return 'Available';
+                }
+                else 
+                {
+                    return 'Not Available';
                 }
             }
         }
         
         public String icon{
-            get { return 'defaultIcon';}
+            
+            get 
+            { 
+                // Fetching the resource
+                List<StaticResource> resourceList= [SELECT Name, NamespacePrefix, SystemModStamp FROM StaticResource WHERE Name = :deal.Name];
+
+                // Checking if the result is returned or not
+                if(resourceList.size() == 1){
+
+                // Getting namespace
+                String namespace = resourceList[0].NamespacePrefix;
+                // Resource URL
+                return '/resource/' + resourceList[0].SystemModStamp.getTime() + '/' + (namespace != null && namespace != '' ? namespace + '__' : '') + deal.Name; 
+                }
+                else
+                {
+                    return '';
+                }
+            }
         }
         
         public String dealName
         {
-            get{ return deal.name; }
+            get{ return deal.Name; }
         }
         
         public Date validThrough
         {
             get{ return deal.Valid_Through__c; }
         }
+        
         public Decimal availableDeals{
-            get { return deal.available_deals__c; }
+            get { return deal.Available_Deals__c; }
         }
         
         public Boolean isRejectable
         {
             get
             { 
-                if(dealActionMap.get(deal.Name)==null)
+                if(dealActionMap.get(deal.Name)==null || deal.Available_Deals__c <= 0)
                     return false;
                 else
                     return true;
@@ -122,11 +176,121 @@ public class DealViewerFrontController {
         {
             get
             { 
-                if(dealActionMap.get(deal.Name)==null)
+                if(dealActionMap.get(deal.Name)==null || deal.Available_Deals__c <= 0)
                     return false;
                 else
                     return true;
             }
         }
     }
+    
+    public Integer PageSize{
+        get{ 
+            System.debug('getting PageSize');
+            return 3; 
+        }
+        set;
+    }
+    
+    public Integer currentPageOffset{
+        get {
+            if (currentPage==null)
+                currentPage=1;
+            return 1;
+        }
+        set;
+    }
+    
+    public ApexPages.StandardSetController samplePagination{
+                get {
+                        
+            if(samplePagination== null) {
+                samplePagination= new ApexPages.StandardSetController(Database.getQueryLocator([
+                    Select Name,(Select Action__c From Deal_Actions__r),Valid_Through__c,Available_Deals__c 
+                    From Deal__c d 
+                    WHERE (d.Available_Deals__c > 0) 
+                    AND (d.Valid_Through__c>Today)
+                        ORDER by d.Valid_Through__c]));
+                //set number of records you want to show on UI
+                samplePagination.setPageSize(PageSize);
+            }
+            return samplePagination;
+            }
+        set;
+    }    
+    
+    // indicates whether there are more records after the current page set.
+    public Boolean HasNext {
+        get {
+            return samplePagination.getHasNext();
+        }
+        set;
+    }
+ 
+    // indicates whether there are more records before the current page set.
+    public Boolean HasPrevious {
+        get {
+            return samplePagination.getHasPrevious();
+        }
+        set;
+    }
+ 
+/*      public ApexPages.StandardSetController samplePagination
+        {
+                get
+                {            
+                        if(samplePagination== null)
+                        {                
+                                samplePagination= new ApexPages.StandardSetController(Database.getQueryLocator([Select Name,(Select Action__c From Deal_Actions__r),Valid_Through__c,Available_Deals__c From Deal__c d]));                
+                                //set number of records you want to show on UI                
+                                samplePagination.setPageSize(5);            
+                        }            
+                        return samplePagination;        
+                }        
+                set;    
+        }    
+*/ 
+
+    
+    
+    public void first(){
+        System.debug('First method');
+        samplePagination.first();
+    }
+    
+    public void last(){    
+        System.debug('Last method');
+        samplePagination.last();
+    }
+    
+    public void previous()
+        {
+        System.debug('prev method');
+        samplePagination.previous();
+    }
+ 
+    public void next()
+    {
+        System.debug('next method');
+        samplePagination.next();
+    }
+ 
+
+/*      public Boolean hasNext
+        {        
+                get
+                {
+                         return samplePagination.getHasNext();        
+                }        
+                set;    
+        }    
+ 
+        public Boolean hasPrevious
+        {        
+                get
+                {
+                        return samplePagination.getHasPrevious();        
+                }        
+                set;    
+        }  */
 }
