@@ -187,7 +187,7 @@ public class DealViewerFrontController {
     public Integer PageSize{
         get{ 
             System.debug('getting PageSize');
-            return 3; 
+            return 5; 
         }
         set;
     }
@@ -210,7 +210,7 @@ public class DealViewerFrontController {
                     From Deal__c d 
                     WHERE (d.Available_Deals__c > 0) 
                     AND (d.Valid_Through__c>Today)
-                        ORDER by d.Valid_Through__c]));
+                        ORDER by d.Valid_Through__c, d.Available_Deals__c, d.Name]));
                 //set number of records you want to show on UI
                 samplePagination.setPageSize(PageSize);
             }
@@ -234,24 +234,6 @@ public class DealViewerFrontController {
         }
         set;
     }
- 
-/*      public ApexPages.StandardSetController samplePagination
-        {
-                get
-                {            
-                        if(samplePagination== null)
-                        {                
-                                samplePagination= new ApexPages.StandardSetController(Database.getQueryLocator([Select Name,(Select Action__c From Deal_Actions__r),Valid_Through__c,Available_Deals__c From Deal__c d]));                
-                                //set number of records you want to show on UI                
-                                samplePagination.setPageSize(5);            
-                        }            
-                        return samplePagination;        
-                }        
-                set;    
-        }    
-*/ 
-
-    
     
     public void first(){
         System.debug('First method');
@@ -275,22 +257,4 @@ public class DealViewerFrontController {
         samplePagination.next();
     }
  
-
-/*      public Boolean hasNext
-        {        
-                get
-                {
-                         return samplePagination.getHasNext();        
-                }        
-                set;    
-        }    
- 
-        public Boolean hasPrevious
-        {        
-                get
-                {
-                        return samplePagination.getHasPrevious();        
-                }        
-                set;    
-        }  */
 }
