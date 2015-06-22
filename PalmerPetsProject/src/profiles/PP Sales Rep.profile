@@ -33,7 +33,7 @@
     <applicationVisibilities>
         <application>standard__Platform</application>
         <default>false</default>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>standard__Sales</application>
@@ -62,7 +62,7 @@
     </applicationVisibilities>
     <classAccesses>
         <apexClass>DealViewerFrontController</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <custom>true</custom>
     <fieldPermissions>
@@ -1448,7 +1448,7 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>DealViewer</apexPage>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>Deal_Viewer</apexPage>
