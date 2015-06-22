@@ -9,6 +9,14 @@
             <apex:outputText value="{! contact.Deals_Rejected__c}"></apex:outputText>
         </apex:pageBlockSection>
         <apex:pageBlockSection columns="1" title="Deals" >
+            <apex:panelGrid id="paginationSectionTop" columns="5" cellpadding="5" cellspacing="5" >
+                <apex:commandButton rendered="{!HasPrevious}" value="|<<" action="{!first}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
+                <apex:commandButton rendered="{!HasPrevious}" value="<" action="{!previous}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
+                <apex:commandButton rendered="{!HasNext}" value=">" action="{!next}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
+                <apex:commandButton rendered="{!HasNext}" value=">>|" action="{!last}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
+                <apex:outputText value="{! PageSize} Records/Page"></apex:outputText>
+            </apex:panelGrid>
+
             <apex:pageBlockTable id="deal_list_table" value="{! offers}" var="offer" columnsWidth="15%">
                 <apex:column headerValue="Action">
                     <apex:commandButton value="Accept" action="{! acceptOffer}" disabled="{! offer.isAcceptable}" reRender="deal_summary_section,deal_list_table" >
@@ -47,11 +55,11 @@
                      <apex:outputLabel value="Next>>" style="font-weight: bold;"/>
                   </apex:commandlink>
           </apex:panelGrid>  -->
-                <apex:panelGrid columns="5" cellpadding="5" cellspacing="5" >
-                <apex:commandButton value="|<<" action="{!first}" reRender="deal_list_table"/>
-                <apex:commandButton rendered="{!HasPrevious}" value="<" action="{!previous}" reRender="deal_list_table"/>
-                <apex:commandButton rendered="{!HasNext}" value=">" action="{!next}" reRender="deal_list_table"/>
-                <apex:commandButton value=">>|" action="{!last}" reRender="deal_list_table"/>
+                <apex:panelGrid id="paginationSectionBottom" columns="5" cellpadding="5" cellspacing="5" >
+                <apex:commandButton rendered="{!HasPrevious}" value="|<<" action="{!first}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
+                <apex:commandButton rendered="{!HasPrevious}" value="<" action="{!previous}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
+                <apex:commandButton rendered="{!HasNext}" value=">" action="{!next}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
+                <apex:commandButton rendered="{!HasNext}" value=">>|" action="{!last}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
                 <apex:outputText value="{! PageSize} Records/Page"></apex:outputText>
                 <!-- <apex:panelGroup >
                     <apex:selectList value="{!PageSize}" size="1">
