@@ -142,7 +142,7 @@ public class DealViewerFrontController {
                 }
                 else
                 {
-                    return '';
+                    return '/resource/1435001971000/default';
                 }
             }
         }
@@ -256,5 +256,26 @@ public class DealViewerFrontController {
         System.debug('next method');
         samplePagination.next();
     }
+    
+    public Integer getResultSize(){
+        return samplePagination.getResultSize();
+    }
  
+    public Integer getPageNumber(){
+        return samplePagination.getPageNumber();
+    }
+    
+    public Integer getPageSize(){
+        return samplePagination.getPageSize();
+    }
+    
+    public Integer getTotalPages(){
+        Integer pageSize = getPageSize();
+        Integer resultSize = getResultSize();
+        Integer totalPages = resultSize/pageSize + 1;
+        System.debug('pageSize = ' + pageSize);
+        System.debug('resultSize = ' + resultSize);
+        System.debug('totalPages = ' + totalPages);
+        return totalPages;
+    }
 }

@@ -14,7 +14,7 @@
                 <apex:commandButton rendered="{!HasPrevious}" value="<" action="{!previous}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
                 <apex:commandButton rendered="{!HasNext}" value=">" action="{!next}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
                 <apex:commandButton rendered="{!HasNext}" value=">>|" action="{!last}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
-                <apex:outputText value="{! PageSize} Records/Page"></apex:outputText>
+                <apex:outputText value="Found {! ResultSize} Results. | Displaying page {! PageNumber} of {! TotalPages} pages. | {! PageSize} Records/Page"></apex:outputText>
             </apex:panelGrid>
 
             <apex:pageBlockTable id="deal_list_table" value="{! offers}" var="offer" columnsWidth="15%">
@@ -60,7 +60,7 @@
                 <apex:commandButton rendered="{!HasPrevious}" value="<" action="{!previous}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
                 <apex:commandButton rendered="{!HasNext}" value=">" action="{!next}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
                 <apex:commandButton rendered="{!HasNext}" value=">>|" action="{!last}" reRender="deal_list_table,paginationSectionBottom,paginationSectionTop"/>
-                <apex:outputText value="{! PageSize} Records/Page"></apex:outputText>
+                <apex:outputText value="Found {! ResultSize} Results. | Displaying page {! PageNumber} of {! TotalPages} pages. | {! PageSize} Records/Page"></apex:outputText>
                 <!-- <apex:panelGroup >
                     <apex:selectList value="{!PageSize}" size="1">
                         <apex:selectOption itemValue="10" itemLabel="10"></apex:selectOption>
