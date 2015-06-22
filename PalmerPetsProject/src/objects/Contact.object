@@ -98,9 +98,9 @@
     <fields>
         <fullName>Acceptance_Rate__c</fullName>
         <externalId>false</externalId>
-        <formula>if (AND (Deals_Accepted__c &lt;&gt; 0, Deals_Rejected__c &lt;&gt; 0) , 
+        <formula>if (AND (Deals_Accepted__c &gt; 0, Deals_Rejected__c &gt; 0) , 
   Deals_Accepted__c / ( Deals_Accepted__c +  Deals_Rejected__c ),
-  if(Deals_Rejected__c == null, 100, 0) )</formula>
+if (AND (Deals_Accepted__c &gt; 0, Deals_Rejected__c = 0), 1, 0))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Acceptance Rate</label>
         <precision>18</precision>
