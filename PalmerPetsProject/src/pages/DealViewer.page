@@ -52,7 +52,7 @@
                 <apex:commandButton rendered="{!HasPrevious}" value="<" action="{!previous}" reRender="deal_list_table"/>
                 <apex:commandButton rendered="{!HasNext}" value=">" action="{!next}" reRender="deal_list_table"/>
                 <apex:commandButton value=">>|" action="{!last}" reRender="deal_list_table"/>
-                <apex:outputText value="3 Records/Page"></apex:outputText>
+                <apex:outputText value="{! PageSize} Records/Page"></apex:outputText>
                 <!-- <apex:panelGroup >
                     <apex:selectList value="{!PageSize}" size="1">
                         <apex:selectOption itemValue="10" itemLabel="10"></apex:selectOption>
