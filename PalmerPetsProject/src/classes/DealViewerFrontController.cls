@@ -276,6 +276,7 @@ public class DealViewerFrontController {
         System.debug('pageSize = ' + pageSize);
         System.debug('resultSize = ' + resultSize);
         System.debug('totalPages = ' + totalPages);
+		System.debug('totalPages = ' + totalPages);
         return totalPages;
     }
 }
