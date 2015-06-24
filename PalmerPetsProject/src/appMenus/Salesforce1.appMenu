@@ -44,4 +44,12 @@
         <name>PendingInterviews</name>
         <type>StandardAppMenuItem</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>milli__Hello_World</name>
+        <type>CustomTab</type>
+    </appMenuItems>
+    <appMenuItems>
+        <name>milli__MyLightning</name>
+        <type>CustomTab</type>
+    </appMenuItems>
 </AppMenu>

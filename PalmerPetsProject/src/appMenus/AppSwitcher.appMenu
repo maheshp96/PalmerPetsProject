@@ -41,7 +41,11 @@
         <type>CustomApplication</type>
     </appMenuItems>
     <appMenuItems>
-        <name>Palmer_Pets_Project</name>
+        <name>milli__Palmer_Pets_Project</name>
+        <type>CustomApplication</type>
+    </appMenuItems>
+    <appMenuItems>
+        <name>milli__ExpenseTracker</name>
         <type>CustomApplication</type>
     </appMenuItems>
 </AppMenu>
