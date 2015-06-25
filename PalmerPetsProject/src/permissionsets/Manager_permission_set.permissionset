@@ -61,6 +61,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MyContactListController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>OpportunityListModel</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1302,6 +1306,10 @@
     <tabSettings>
         <tab>Deal__c</tab>
         <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>ExpenseTrackerApp</tab>
+        <visibility>None</visibility>
     </tabSettings>
     <tabSettings>
         <tab>Expense__c</tab>
