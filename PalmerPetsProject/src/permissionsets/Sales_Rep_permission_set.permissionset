@@ -1334,6 +1334,10 @@
         <visibility>None</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>Field_Sales_App</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>Hello_World</tab>
         <visibility>None</visibility>
     </tabSettings>

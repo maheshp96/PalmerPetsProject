@@ -1438,6 +1438,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Field_Sales_App</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Hello_World</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
